@@ -16,7 +16,7 @@ spec:
         app: container-info
     spec:
       containers:
-      - image: fsainovich/container-info:0.3
+      - image: fsainovich/container-info:0.4
         name: container-info
         env:
           - name: CONFIG
