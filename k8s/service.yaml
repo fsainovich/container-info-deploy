@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: Service 
+metadata:
+  name: container-info-service
+  namespace: container-info
+spec:
+  selector: 
+    app: container-info
+  ports:
+    - protocol: TCP
+      port: 80 # Porta do Service
+      targetPort: 5000 # Porta dos Pods

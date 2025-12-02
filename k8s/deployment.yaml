@@ -1,0 +1,23 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: container-info
+  name: container-info-deployment
+  namespace: container-info
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: container-info
+  template:
+    metadata:
+      labels:
+        app: container-info
+    spec:
+      containers:
+      - image: fsainovich/container-info:0.3
+        name: container-info
+        env:
+          - name: CONFIG
+            value: "HOSTNAME,USER,PWD"

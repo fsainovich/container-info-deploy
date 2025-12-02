@@ -1,0 +1,47 @@
+apiVersion: gateway.networking.k8s.io/v1
+kind: HTTPRoute
+metadata:
+  name: container-info-http-route
+  namespace: container-info
+  annotations:
+    external-dns.alpha.kubernetes.io/hostname: "gw.home.fsainovich.tec.br"
+spec:
+  hostnames:
+  - cinfo.home.fsainovich.tec.br
+  parentRefs:
+  - name: default-gateway
+    namespace: nginx-gwapi
+    sectionName: wildcard-https
+  rules:
+  - backendRefs:
+    - group: ""
+      kind: Service
+      name: container-info-service
+      port: 80
+      weight: 1
+    matches:
+    - path:
+        type: PathPrefix
+        value: /
+
+---
+apiVersion: gateway.networking.k8s.io/v1
+kind: HTTPRoute
+metadata:
+  name: http-filter-redirect-container-info
+  namespace: container-info
+spec:
+  hostnames:
+  - cinfo.home.fsainovich.tec.br
+  parentRefs:
+  - group: gateway.networking.k8s.io
+    kind: Gateway
+    name: default-gateway
+    namespace: nginx-gwapi
+    sectionName: http  
+  rules:
+  - filters:
+    - type: RequestRedirect
+      requestRedirect:
+        scheme: https
+        statusCode: 302
